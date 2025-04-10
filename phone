@@ -1,0 +1,33 @@
+int=$#
+
+str=""
+
+if [ $# -lt 1 ]
+then
+	echo Usage:phone searchfor[...searchfor]
+i
+		echo "(You didn't tell me what you want to search for.)"
+fi
+
+for arg in "$@"
+do
+	if [ $int -eq $# ]
+	then
+		str=$(egrep -i "$arg" mydata)
+	fi
+
+	if [ -n "$str" ]
+	then
+		str=$(egrep -i "$str|$arg" mydata)
+	fi
+
+	int=`expr $int - 1`
+
+	if [ $int -eq 0 ]
+	then
+		if [ -n "$str" ]
+		then
+			egrep -i "$str" mydata|awk -f display.awk
+		fi
+	fi
+done
